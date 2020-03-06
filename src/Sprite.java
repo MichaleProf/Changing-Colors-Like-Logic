@@ -6,7 +6,7 @@ public abstract class Sprite {
     Board board;
     int x, y, width, height;
     double dx, dy;
-    final int SPEED = (int)(Math.random() * STATS.getRangeSpeed()) + STATS.getLowSpeed();
+    int speed = (int)(Math.random() * STATS.getRangeSpeed()) + STATS.getLowSpeed();
     boolean remove = false;
 
     public Sprite(Color color, int x, int y, int width, int height, Board board){
@@ -19,9 +19,9 @@ public abstract class Sprite {
 
         while((int)dx == 0 || (int)dy == 0){
             double angle = 2 * Math.PI * (Math.random() + 1);
-            double speed = (SPEED * Math.random() + 1);
-            dx = Math.cos(angle) * speed;
-            dy = Math.sin(angle) * speed;
+            double s = (speed * Math.random() + 1);
+            dx = Math.cos(angle) * s;
+            dy = Math.sin(angle) * s;
         }
 
     }
@@ -45,6 +45,31 @@ public abstract class Sprite {
 
     }
 
+
+
+    public double getDx() {
+        return dx;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    public double getDy() {
+        return dy;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
     public boolean isRemove() {
         return remove;

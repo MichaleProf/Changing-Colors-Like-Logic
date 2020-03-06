@@ -1,13 +1,12 @@
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 
-public class Game extends JFrame {
+public class Game extends JFrame implements KeyListener {
 
     Board board;
     private int posX, posY;
     boolean mouseClicked = false;
+    boolean right, left, up, down, enter;
 
     public Game(){
 
@@ -18,6 +17,7 @@ public class Game extends JFrame {
 
         board = new Board(this);
         add(board);
+        addKeyListener(this);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -87,5 +87,58 @@ public class Game extends JFrame {
 
     public void setMouseClicked(boolean mouseClicked) {
         this.mouseClicked = mouseClicked;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
+            right = true;
+        if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
+            left = true;
+        if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
+            up = true;
+        if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
+            down = true;
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            enter = true;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
+            right = false;
+        if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
+            left = false;
+        if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
+            up = false;
+        if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
+            down = false;
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            enter = false;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public boolean isEnter() {
+        return enter;
     }
 }
