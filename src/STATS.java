@@ -1,6 +1,6 @@
 public class STATS {
 
-    private static int numEnemies = 5;
+    private static int numEnemies = 5, numBuckets = 8;
     private static int life = 3, level = 1;
     private static int lowSpeed = 4, rangeSpeed = 8;
 
@@ -22,6 +22,10 @@ public class STATS {
 
     public static int getRangeSpeed() {
         return rangeSpeed;
+    }
+
+    public static int getNumBuckets() {
+        return numBuckets;
     }
 
     public void updateLevel(){
