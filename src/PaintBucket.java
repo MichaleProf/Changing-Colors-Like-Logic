@@ -16,4 +16,6 @@ public class PaintBucket extends Sprite {
         g.fillOval(getX(), getY(), getWidth(), getHeight());
 
     }
+
+    public void move(){}
 }
