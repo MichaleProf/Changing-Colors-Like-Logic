@@ -44,9 +44,9 @@ public class Game extends JFrame implements KeyListener {
 
         });
 
+        board.setup();
         pack();
 
-        board.setup();
         setLocationRelativeTo(null);
 
     }
@@ -91,6 +91,11 @@ public class Game extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
             right = true;
         if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
@@ -104,7 +109,7 @@ public class Game extends JFrame implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
             right = false;
         if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
@@ -115,11 +120,6 @@ public class Game extends JFrame implements KeyListener {
             down = false;
         if(e.getKeyCode() == KeyEvent.VK_ENTER)
             enter = false;
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
     }
 
     public boolean isRight() {
