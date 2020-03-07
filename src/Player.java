@@ -15,11 +15,18 @@ public class Player extends Sprite {
     @Override
     public void move() {
         int tempSpeed = getSpeed();
+        //System.out.println(tempSpeed);
+
         boolean areAtLeastTwoDirectionsPressed = game.isLeft() && (game.isDown() || game.isUp() || game.isRight()) || game.isDown() && (game.isUp() || game.isRight()) || game.isUp() && game.isRight();
         if(areAtLeastTwoDirectionsPressed)
-            tempSpeed /= 2;
+            tempSpeed = (int)Math.sqrt(Math.pow(tempSpeed, 2)/2);
+
+        //System.out.println(tempSpeed + " " + 2);
+
         setDx(0);
         setDy(0);
+
+
         if(game.isUp())
             setDy(getDy() - tempSpeed);
         if(game.isDown())
@@ -28,15 +35,19 @@ public class Player extends Sprite {
             setDx(getDx() + tempSpeed);
         if(game.isLeft())
             setDx(getDx() - tempSpeed);
+
+        //System.out.println(game.isUp() + " " + game.isRight() + " " + game.isDown() + " " + game.isLeft());
+        //System.out.println(getDx() + " " + getDy());
+
         setX(getX() + (int)getDx());
         setY(getY() + (int)getDy());
 
-        if(getX() > getBoard().getWIDTH())
-            setX(getBoard().getWIDTH());
+        if(getX() > getBoard().getWIDTH() - getWidth())
+            setX(getBoard().getWIDTH() - getWidth());
         if(getX() < 0)
             setX(0);
-        if(getY() > getBoard().getHEIGHT())
-            setY(getBoard().getHEIGHT());
+        if(getY() > getBoard().getHEIGHT() - getHeight())
+            setY(getBoard().getHEIGHT() - getHeight());
         if(getY() < 0)
             setY(0);
 
@@ -47,14 +58,14 @@ public class Player extends Sprite {
 
         g.setColor(getColor());
 
-        int[] xpoints = {0, getWidth()/2, getWidth()};
-        int[] ypoints = {getHeight(), 0, getHeight()};
+        int[] xPoints = {0, getWidth()/2, getWidth()};
+        int[] yPoints = {getHeight(), 0, getHeight()};
         for(int i = 0; i < 3; i++){
-            xpoints[i] += getX();
-            ypoints[i] += getY();
+            xPoints[i] += getX();
+            yPoints[i] += getY();
         }
 
-        g.fillPolygon(xpoints, ypoints, 3);
+        g.fillPolygon(xPoints, yPoints, 3);
 
     }
 }
