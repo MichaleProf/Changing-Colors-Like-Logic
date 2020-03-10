@@ -16,7 +16,6 @@ public class Board extends JPanel implements ActionListener{
 
 
 
-
     public Board(Game game){
 
         this.game = game;
