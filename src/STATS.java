@@ -21,7 +21,7 @@ public class STATS {
 
     public static void updateLevel(Board board){
 
-        numEnemies += numBuckets - 3;
+        numEnemies += ((numBuckets == 8)? (2) : (numBuckets - 3));
 
         if(numEnemies > (numBuckets-3)*2 + 5 && numBuckets != 8){
             numEnemies = 5;
