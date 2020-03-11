@@ -18,6 +18,8 @@ public class Board extends JPanel implements ActionListener{
 
     ArrayList<Sprite> actors;
 
+    Color[] colorSpectrum = {Color.GREEN, Color.BLUE, Color.RED, Color.ORANGE, Color.PINK, new Color(123, 12, 201) , Color.MAGENTA, Color.CYAN};
+
 
 
     public Board(Game game){
@@ -26,7 +28,8 @@ public class Board extends JPanel implements ActionListener{
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         setBackground(Color.BLACK);
         timer = new Timer(1000/60, this);
-        timer.start();
+
+
 
     }
 
@@ -36,11 +39,11 @@ public class Board extends JPanel implements ActionListener{
 
         actors = new ArrayList<>();
 
-        actors.add(new Player(Color.GREEN, WIDTH/2, HEIGHT/2, 20, 10, this, 10, game));
+        actors.add(new Player(Color.WHITE, WIDTH/2, HEIGHT/2, 20, 10, this, 9, game));
 
         //init buckets
         for(int i = 0; i < STATS.getNumBuckets(); i++){
-            Color color = Color.GREEN;
+            Color color = colorSpectrum[i];
             int x = 0;
             int y = 0;
             int diameter = 20;
@@ -49,42 +52,34 @@ public class Board extends JPanel implements ActionListener{
 
             switch(i){
                 case 0:
-                    color = Color.GREEN;
                     x = 0;
                     y = 0;
                     break;
                 case 1:
-                    color = Color.BLUE;
                     x = width;
                     y = 0;
                     break;
                 case 2:
-                    color = Color.RED;
                     x = width;
                     y = height;
                     break;
                 case 3:
-                    color = Color.ORANGE;
                     x = 0;
                     y = height;
                     break;
                 case 4:
-                    color = Color.PINK;
                     x = width/2;
                     y = 0;
                     break;
                 case 5:
-                    color = Color.YELLOW;
                     x = width;
                     y = height/2;
                     break;
                 case 6:
-                    color = Color.MAGENTA;
                     x = width/2;
                     y = height;
                     break;
                 case 7:
-                    color = Color.ORANGE;
                     x = 0;
                     y = height/2;
                     break;
@@ -92,6 +87,24 @@ public class Board extends JPanel implements ActionListener{
 
             actors.add(new PaintBucket(color, x, y, diameter, diameter, this));
         }
+
+        //init enemies
+        for(int i = 0; i < STATS.getNumEnemies(); i++){
+            int colorInt = (int)(Math.random() * STATS.getNumBuckets());
+            Color color = colorSpectrum[colorInt];
+
+            int x = (int)(Math.random() * (WIDTH-50));
+            int y = (int)(Math.random() * (HEIGHT-50));
+            if(x > (WIDTH/2-25))
+                x += 50;
+            if(y > (HEIGHT/2-25))
+                y= 50;
+
+            actors.add(new Enemy(color, x, y, 20, 20, this));
+        }
+
+        if(!timer.isRunning())
+            timer.start();
 
     }
 
@@ -112,6 +125,17 @@ public class Board extends JPanel implements ActionListener{
                     actors.get(0).setColor(actors.get(i).getColor());
             }
 
+            //System.out.println(ahctors.lengt);
+            //enemy player interaction
+            for (int i = STATS.getNumBuckets() + 1; i < actors.size(); i++) {
+                if (actors.get(0).collidesWith(actors.get(i))) {
+                    if (actors.get(0).getColor().equals(actors.get(i).getColor()))
+                        actors.get(i).setRemove();
+                    else
+                        actors.get(0).setRemove();
+                }
+            }
+        }
     }
 
     @Override
@@ -131,6 +155,7 @@ public class Board extends JPanel implements ActionListener{
         }
 
         checkCollisions();
+        removeActors();
 
         repaint();
 
@@ -140,9 +165,22 @@ public class Board extends JPanel implements ActionListener{
 
         super.paintComponent(g);
 
-        for(Sprite actor: actors){
-            actor.paint(g);
+        if(actors.get(0).getClass().equals(Player.class)) {
+            for (Sprite actor : actors) {
+                actor.paint(g);
+            }
+        }else{
+
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            Font font = new Font("Serif", Font.PLAIN, 96);
+            g2.setFont(font);
+            g2.drawString("You Died", 40, 120);
+
         }
+
 
     }
 
@@ -153,4 +191,22 @@ public class Board extends JPanel implements ActionListener{
     public int getHEIGHT() {
         return HEIGHT;
     }
+
+    public void removeActors(){
+
+        ArrayList<Integer> removeSpots = new ArrayList<>();
+        for(int i = 0; i < actors.size(); i++){
+            if(actors.get(i).isRemove())
+                removeSpots.add(i);
+        }
+
+        for(int i = 0; i < removeSpots.size(); i++){
+            actors.remove(removeSpots.get(i)-i);
+        }
+
+    }
+
+
+
+
 }
