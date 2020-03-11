@@ -12,6 +12,10 @@ public class Board extends JPanel implements ActionListener{
     final int WIDTH = 600;
     final int HEIGHT = 800;
 
+    long moment;
+    final int DELAY = 3000;
+    boolean initColor = false;
+
     ArrayList<Sprite> actors;
 
 
@@ -27,6 +31,8 @@ public class Board extends JPanel implements ActionListener{
     }
 
     public void setup(){
+
+        moment = System.currentTimeMillis();
 
         actors = new ArrayList<>();
 
@@ -91,15 +97,34 @@ public class Board extends JPanel implements ActionListener{
 
     public void checkCollisions(){
 
-        for(int i = 1; i < STATS.getNumBuckets() + 1; i++){
-            if(actors.get(0).collidesWith(actors.get(i)))
-                actors.get(0).setColor(actors.get(i).getColor());
-        }
+        long gap = System.currentTimeMillis() - moment;
+
+        if(gap > DELAY) {
+
+            if(gap > DELAY && gap < DELAY+100){
+                initColor = true;
+                actors.get(0).setColor(colorSpectrum[0]);
+            }
+
+            //buckets change player color
+            for (int i = 1; i < STATS.getNumBuckets() + 1; i++) {
+                if (actors.get(0).collidesWith(actors.get(i)))
+                    actors.get(0).setColor(actors.get(i).getColor());
+            }
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if(actors.size() == STATS.getNumBuckets()+1 && actors.get(0).getClass().equals(Player.class)){
+            STATS.updateLevel(this);
+        }
+        /*
+        if(actors.get(0).getClass().equals(Player.class))
+            setup();
+
+         */
 
         for(Sprite actor: actors){
             actor.move();

@@ -1,19 +1,10 @@
 public class STATS {
 
-    private static int numEnemies = 5, numBuckets = 8;
-    private static int life = 3, level = 1;
+    private static int numEnemies = 5, numBuckets = 4;
     private static int lowSpeed = 4, rangeSpeed = 8;
 
     public static int getNumEnemies() {
         return numEnemies;
-    }
-
-    public static int getLife() {
-        return life;
-    }
-
-    public static int getLevel() {
-        return level;
     }
 
     public static int getLowSpeed() {
@@ -28,12 +19,17 @@ public class STATS {
         return numBuckets;
     }
 
-    public void updateLevel(){
+    public static void updateLevel(Board board){
 
-        switch(level){
-            case 1:
-                break;
+        numEnemies += numBuckets - 3;
+
+        if(numEnemies > (numBuckets-3)*2 + 5 && numBuckets != 8){
+            numEnemies = 5;
+            numBuckets++;
         }
+
+        board.setup();
+
 
     }
 }
